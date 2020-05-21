@@ -1,5 +1,5 @@
 import Leaflet from 'leaflet'
-import { streetlightPopup } from './Popups'
+import { foodbanksPopup } from './Popups'
 
 const Configuration = {
     Map: {
@@ -14,11 +14,37 @@ const Configuration = {
     DynamicData: 
     [
         {
-            key: 'streetlights',
-            url: 'https://spatial.stockport.gov.uk/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=highways:street_lights&outputFormat=application/json&bbox={0},EPSG:4326&srsName=EPSG:4326',
+            key: 'os1250_line',
+            url: 'https://spatial.stockport.gov.uk/geoserver/wms?',
             layerOptions: {
-                onEachFeature: streetlightPopup,
-                maxZoom: 16,
+                maxZoom: 20,
+                minZoom: 19,
+                layers: 'base_maps:os1250_line',
+                format: 'image/png',
+                transparent: true
+            },
+            displayOverlay: false,
+            visibleByDefault: true
+        },
+        {
+            key: 'os1250_text',
+            url: 'https://spatial.stockport.gov.uk/geoserver/wms?',
+            layerOptions: {
+                maxZoom: 20,
+                minZoom: 19,
+                layers: 'base_maps:os1250_text',
+                format: 'image/png',
+                transparent: true
+            },
+            displayOverlay: false,
+            visibleByDefault: true
+        },
+        {
+            key: 'foodbanks',
+            url: 'https://spatial.stockport.gov.uk/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=neighbourhoods:foodbanks&outputFormat=application/json&bbox={0},EPSG:4326&srsName=EPSG:4326',
+            layerOptions: {
+                onEachFeature: foodbanksPopup,
+                maxZoom: 9,
                 pointToLayer: (feature, latlng) => {
                     return Leaflet.circleMarker(latlng, {
                         radius: 8,
@@ -29,7 +55,8 @@ const Configuration = {
                     })
                 },
             },
-            displayOverlay: false
+            displayOverlay: false,
+            visibleByDefault: true
         }
     ],
     StaticData: 
